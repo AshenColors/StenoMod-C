@@ -77,6 +77,14 @@ bool look() {
   bool ret = false;
   for(int i = 0; i < 4; i++) {
      uint8_t r = read_column(i);
+     // See if S2 has been pushed,
+     // which sends 11100000 when
+     // it should just be 0000001.
+     if (i == 3 && r & 0x20) {
+      ret = true;
+      r &= ~0x20;
+      b[0] |= 0x01;
+     }
      ret |= r;
      b[i] |= r;
   }
